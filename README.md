@@ -1,3 +1,15 @@
+# References:
+
+- [Tutorial: Intro to React](https://reactjs.org/tutorial/tutorial.html)
+- [Final Result](https://codepen.io/gaearon/pen/gWWZgR?editors=0010)
+- [Solution to suggested improvements](https://github.com/kelanwu/react-tic-tac-toe)
+- [Create React App](https://github.com/facebook/create-react-app)
+- [Chrome: React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
+
+---
+
+# Create React App
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
