@@ -19,8 +19,11 @@ import './index.css';
 
 // Square Component
 function Square(props) {
+  const className = 'square' + (props.highlight ? ' highlight' : '');
   return (
-    <button className="square" onClick={props.onClick}>
+    <button
+      className={className}
+      onClick={props.onClick}>
       {props.value}
     </button>
   );
@@ -29,10 +32,12 @@ function Square(props) {
 // Board Component
 class Board extends React.Component {
   renderSquare(i) {
+    const winLine = this.props.winLine;
     return (
       <Square
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
+        highlight={winLine && winLine.includes(i)}
       />
     );
   }
@@ -77,7 +82,7 @@ class Game extends React.Component {
     const current = history[history.length - 1];
     const squares = current.squares.slice();
 
-    if (calculateWinner(squares) || squares[i]) {
+    if (calculateWinner(squares).winner || squares[i]) {
       return;
     }
     squares[i] = this.state.xIsNext ? "X" : "O";
@@ -110,7 +115,8 @@ class Game extends React.Component {
     const stepNumber = this.state.stepNumber;
     const history = this.state.history;
     const current = history[stepNumber];
-    const winner = calculateWinner(current.squares);
+    const winInfo = calculateWinner(current.squares);
+    const winner = winInfo.winner;
     const isAscending = this.state.isAscending;
 
     let moves = history.map((step, move) => {
@@ -152,6 +158,7 @@ class Game extends React.Component {
           <Board
             squares={current.squares}
             onClick={i => this.handleClick(i)}
+            winLine={winInfo.line}
           />
         </div>
         <div className="game-info">
@@ -184,8 +191,14 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return {
+        winner: squares[a],
+        line: lines[i]
+      }
     }
   }
-  return null;
+  return {
+    winner: null,
+    line: null
+  };
 }
