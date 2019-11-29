@@ -140,14 +140,19 @@ class Game extends React.Component {
       );
     });
 
+    // game status (winner, draw, or next player)
     let status;
     if (winner) {
       status = "Winner: " + winner;
-    } else {
+    }
+    else if (winInfo.isDraw) {
+        status = "Draw";
+    }
+    else {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
-
-    // order move list
+    
+    // sort move list (ascending [default], descending)
     if (!isAscending) {
       moves.reverse();
     }
@@ -188,17 +193,32 @@ function calculateWinner(squares) {
     [0, 4, 8],
     [2, 4, 6]
   ];
+
+  // test for winner
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      // winner
       return {
         winner: squares[a],
-        line: lines[i]
+        line: lines[i],
+        isDraw: false
       }
     }
   }
+
+  // test for draw
+  let isDraw = true;
+  for (let i = 0; i < squares.length; i++) {
+    if (squares[i] === null) {
+      isDraw = true;
+      break;
+    }
+  }
+
   return {
     winner: null,
-    line: null
+    line: null,
+    isDraw: isDraw
   };
 }
